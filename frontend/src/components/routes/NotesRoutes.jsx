@@ -20,12 +20,16 @@ import PapersList from "../../admin/PapersList";
 import PapersHome from "../pages/papers/PapersHome";
 import PaperDetails from "../pages/papers/PaperDetails";
 import PendingPayments from "../../admin/PaymentsList";
+import Error from "../pages/Error";
+
+
 // import PurchasePage from "../pages/papers/PurchasePage";
 // import PurchasedPapers from "../pages/papers/PurchasedPapers";
 
 const NotesRoutes = () => {
   return (
     <Routes>
+      <Route path="/*" element={<Error />} />
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
