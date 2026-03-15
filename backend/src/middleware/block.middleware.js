@@ -2,11 +2,15 @@
 
 export const delBlocked = async (req, res, next) => {
   try {
+    if (req.user.isGuest) return next();
+
     //check user deleted
     if (req.user.isDeleted === true) {
       return res.status(401).json({ message: "User not found or deleted" });
     }
+
     //check user blocked
+    console.log(req.user.status);
     if (req.user.status !== "active") {
       return res
         .status(401)

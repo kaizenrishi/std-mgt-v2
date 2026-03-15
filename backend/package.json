@@ -4,6 +4,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "dev":"nodemon server.js",
     "start": "node server.js"
   },
   "keywords": [],
@@ -29,6 +30,7 @@
     "nodemailer": "^7.0.13",
     "npm": "^11.7.0",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "uuid": "^13.0.0"
   }
 }

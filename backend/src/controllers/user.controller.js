@@ -3,7 +3,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendEmail } from "../../utils/sendEmail.js";
-// const SecretKey = "studentMangement@_525";
+import { v4 as uuidv4 } from "uuid";
+
+const SecretKey = "studentMangement@_525";
 
 export const register = async (req, res) => {
   try {
@@ -307,5 +309,58 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "server error" });
+  }
+};
+
+export const guestUser = async (req, res) => {
+  try {
+    const guestId = uuidv4().slice(0, 8);
+    const name = `Guest_${guestId}`;
+    const email = `guest${guestId}@gmail.com`;
+    const password = uuidv4();
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    const guestUser = await User.create({
+      name: name,
+      email: email,
+      password: hashedPassword,
+      isGuest: true,
+      expiresAt: expiresAt,
+    });
+
+    const token = jwt.sign(
+      {
+        userId: guestUser._id,
+        email: email,
+        status: "active", // ye add karo
+        isDeleted: false, // ye add karo
+        isGuest: true,
+      },
+      SecretKey,
+      {
+        expiresIn: "1d",
+      },
+    );
+
+    const cookiesOption = {
+      httpOnly: true, //frontend js cannot access
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    };
+
+    res.cookie("jwt", token, cookiesOption);
+
+    res.status(201).json({
+      message: "guest user created successfully",
+      token,
+      user: { name, isGuest: true, guestUser },
+    });
+  } catch (error) {
+    console.error("server error", error);
+    return res.status(501).json({ message: "Server error" });
   }
 };

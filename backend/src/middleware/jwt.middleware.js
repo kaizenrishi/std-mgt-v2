@@ -9,6 +9,7 @@ export const authenticate = (req, res, next) => {
       return res.status(401).json({ message: "Acess denied. Login required" });
     }
     //token verify
+    console.log(token)
     const decode = jwt.verify(token, process.env.SecretKey);
     //attack userid from request
     req.user = decode;

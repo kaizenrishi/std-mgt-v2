@@ -7,6 +7,7 @@ import {
   resetPassword,
   Userdelete,
   updateProfile,
+  guestUser,
 } from "../controllers/user.controller.js";
 import {
   registerValidations,
@@ -31,6 +32,7 @@ router.post("/logout", logout);
 router.put("/user/delete", authenticate, delBlocked, Userdelete);
 router.post("/forgot", forgotPassword);
 router.post("/reset/:token", resetPassword);
+router.post("/guestAccount", guestUser);
 
 //google auth
 

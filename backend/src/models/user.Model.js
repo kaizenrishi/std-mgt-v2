@@ -57,6 +57,17 @@ const userSchema = new mongoose.Schema(
       default: false,
       index: true,
     },
+    isGuest: {
+      type: Boolean,
+      default: false,
+    },
+    expiresAt: {
+      type: Date,
+      default: null,
+      index: {
+        expires: 0,
+      },
+    },
     resetToken: {
       type: String,
       default: "",
